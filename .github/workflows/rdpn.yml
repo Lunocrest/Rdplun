@@ -20,7 +20,7 @@ jobs:
 
     - name: Jalankan Serveo tunnel ke RDP
       run: |
-        echo y | Start-Process -NoNewWindow -FilePath "$env:USERPROFILE\plink.exe" -ArgumentList "-ssh -R 3389:localhost:3389 serveo.net -l serveo" 
+        Start-Process -NoNewWindow -FilePath "$env:USERPROFILE\plink.exe" -ArgumentList "-ssh -R 3389:localhost:3389 serveo.net -l serveo -batch"
         Start-Sleep -Seconds 15
 
     - name: Info login
@@ -28,6 +28,6 @@ jobs:
         echo "==============================="
         echo "Username: runneradmin"
         echo "Password: P@ssw0rd123"
-        echo "Silakan cek di log atas alamat dari serveo (biasanya yourname.serveo.net:3389)"
+        echo "Silakan cek di log atas alamat dari serveo (biasanya seperti 12345.serveo.net:3389)"
         echo "Gunakan alamat itu di Remote Desktop (RDP)"
         echo "==============================="
