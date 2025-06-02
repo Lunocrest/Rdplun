@@ -18,6 +18,10 @@ jobs:
       run: |
         Invoke-WebRequest https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe -OutFile "$env:USERPROFILE\plink.exe"
 
+    - name: Simpan host key serveo
+      run: |
+        echo y | & "$env:USERPROFILE\plink.exe" serveo.net -l serveo -P 22 -N
+
     - name: Jalankan Serveo tunnel ke RDP
       run: |
         Start-Process -NoNewWindow -FilePath "$env:USERPROFILE\plink.exe" -ArgumentList "-ssh -R 3389:localhost:3389 serveo.net -l serveo -batch"
@@ -28,6 +32,6 @@ jobs:
         echo "==============================="
         echo "Username: runneradmin"
         echo "Password: P@ssw0rd123"
-        echo "Silakan cek di log atas alamat dari serveo (biasanya seperti 12345.serveo.net:3389)"
-        echo "Gunakan alamat itu di Remote Desktop (RDP)"
+        echo "Silakan cek log atas untuk host Serveo (misalnya: something.serveo.net:3389)"
+        echo "Gunakan itu untuk login RDP"
         echo "==============================="
