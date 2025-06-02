@@ -14,24 +14,20 @@ jobs:
         Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Control\Terminal Server" -name "fDenyTSConnections" -Value 0
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
 
-    - name: Download dan extract ngrok
+    - name: Download SSH client (Plink dari PuTTY)
       run: |
-        Invoke-WebRequest https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-stable-windows-amd64.zip -OutFile ngrok.zip
-        Expand-Archive ngrok.zip -DestinationPath "$env:USERPROFILE\ngrok"
+        Invoke-WebRequest https://the.earth.li/~sgtatham/putty/latest/w64/plink.exe -OutFile "$env:USERPROFILE\plink.exe"
 
-    - name: Jalankan ngrok tunnel ke RDP
+    - name: Jalankan Serveo tunnel ke RDP
       run: |
-        $ngrokPath = "$env:USERPROFILE\ngrok\ngrok.exe"
-        & $ngrokPath authtoken 2xwf5HpMkZ1ykzJzMqfh2uDlxRN_Y2LcTC8Kb5YubJqc8Rm
-        Start-Process -NoNewWindow -FilePath $ngrokPath -ArgumentList "tcp 3389"
+        echo y | Start-Process -NoNewWindow -FilePath "$env:USERPROFILE\plink.exe" -ArgumentList "-ssh -R 3389:localhost:3389 serveo.net -l serveo" 
         Start-Sleep -Seconds 15
-        Invoke-WebRequest http://127.0.0.1:4040/api/tunnels -OutFile tunnels.json
-        Get-Content tunnels.json
 
     - name: Info login
       run: |
         echo "==============================="
         echo "Username: runneradmin"
         echo "Password: P@ssw0rd123"
-        echo "Gunakan alamat TCP dari ngrok (lihat log di atas)"
+        echo "Silakan cek di log atas alamat dari serveo (biasanya yourname.serveo.net:3389)"
+        echo "Gunakan alamat itu di Remote Desktop (RDP)"
         echo "==============================="
